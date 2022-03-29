@@ -1,10 +1,12 @@
-from asyncio.windows_events import NULL
+import random
 import socket
 import threading
+import story
 
+NULL = ""
 HEADER = 64
 PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = 'localhost'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
@@ -17,22 +19,33 @@ print('Server is listening for connections..')
 clients = []
 nicknames = []
 
-def broadcast(message, compare):
+
+def broadcast(message):
     for client in clients:
-        if client != compare:
-            client.send(message)
+        client.send(message.encode(FORMAT))
+
+def sendSuggestion():
+    action = random.choice(story.actions)
+    actionMsg = "#ACTION" + action
+    broadcast(actionMsg)
+    question = random.choice(story.suggestions).format(action)
+    message = "#SUGGESTION {} \n".format(question)
+    broadcast(message)
+
 
 def handle(client):
+    if len(clients) > 0:
+        sendSuggestion()
     while True:
         try:
-            message = client.recv(1024)
+            message = client.recv(2048).decode(FORMAT)
             broadcast(message, client)
         except:
             index = clients.index(client)
             clients.remove(client)
             client.close()
             nickname = nicknames[index]
-            broadcast(f'{nickname}: left the chat'.encode(FORMAT), NULL)
+            broadcast(f'{nickname}: left the chat')
             nicknames.remove(nickname)
             break
 
@@ -46,8 +59,8 @@ def receive():
         nicknames.append(nickname)
         clients.append(client)
 
-        print(f'Nickname of the client is {nickname}')
-        broadcast(f'{nickname} has entered the chat'.encode(FORMAT), NULL)
+        print(f'Nickname of the client is {nickname} \n')
+        broadcast(f'{nickname} has entered the chat \n')
         client.send('Connected to the server'.encode(FORMAT))
 
         thread = threading.Thread(target=handle, args=(client,))
@@ -55,6 +68,7 @@ def receive():
         print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
 
 receive()
+
 
 '''
 def handle_client(client):

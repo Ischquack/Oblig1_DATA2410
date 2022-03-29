@@ -7,12 +7,14 @@ HEADER = 64
 PORT = 5050
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "192.168.0.176"
+SERVER = 'localhost'
 ADDR = (SERVER, PORT)
 
 nickname = input('Choose a nickname: ')
-if nickname in bot.bots:
-    nickname.start()
+action = ""
+
+#if nickname in bot.bots:
+#    nickname.start()
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
@@ -20,12 +22,22 @@ client.connect(ADDR)
 def receive():
     while True:
         try:
-            message = client.recv(1024).decode(FORMAT)
+            message = client.recv(2048).decode(FORMAT)
             if message == 'NICK':
                 client.send(nickname.encode(FORMAT))
-            else:
-                'if message contains' 
+            elif message.startswith("#ACTION"):
+                #message.replace("#ACTION", "")
+                action = message
+            elif message.startswith("#SUGGESTION"):
+                #message.replace("#SUGGESTION", "") 
+                time.sleep(1)
                 print(message)
+                response = bot.selectBot(nickname, action)
+                time.sleep(1)
+                client.send(f"{nickname}: {response}".encode(FORMAT))
+            elif message.startswith("#USERINPUT"):
+                print(message)
+            else: print(message)
 
         except:
             print('An error occured')
