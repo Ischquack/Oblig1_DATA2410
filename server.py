@@ -2,6 +2,7 @@ import random
 import socket
 import threading
 import story
+import time
 
 NULL = ""
 HEADER = 64
@@ -29,17 +30,19 @@ def sendSuggestion():
     actionMsg = "#ACTION" + action
     broadcast(actionMsg)
     question = random.choice(story.suggestions).format(action)
-    message = "#SUGGESTION {} \n".format(question)
+    message = "#SUGGESTION{} \n".format(question)
     broadcast(message)
 
 
 def handle(client):
-    if len(clients) > 0:
+    if len(clients) > 1:
+        time.sleep(1)
         sendSuggestion()
     while True:
         try:
             message = client.recv(2048).decode(FORMAT)
-            broadcast(message, client)
+            print(message)
+            broadcast(message)
         except:
             index = clients.index(client)
             clients.remove(client)

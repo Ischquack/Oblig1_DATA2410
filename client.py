@@ -26,14 +26,12 @@ def receive():
             if message == 'NICK':
                 client.send(nickname.encode(FORMAT))
             elif message.startswith("#ACTION"):
-                #message.replace("#ACTION", "")
+                message = message.replace("#ACTION", "")
                 action = message
             elif message.startswith("#SUGGESTION"):
-                #message.replace("#SUGGESTION", "") 
-                time.sleep(1)
+                message = message.replace("#SUGGESTION", "") 
                 print(message)
                 response = bot.selectBot(nickname, action)
-                time.sleep(1)
                 client.send(f"{nickname}: {response}".encode(FORMAT))
             elif message.startswith("#USERINPUT"):
                 print(message)
