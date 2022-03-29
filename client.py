@@ -33,6 +33,7 @@ def receive():
                 print(message)
                 response = bot.selectBot(nickname, action)
                 client.send(f"{nickname}: {response}".encode(FORMAT))
+                print("You: " + response)
             elif message.startswith("#USERINPUT"):
                 print(message)
             else: print(message)
@@ -44,7 +45,6 @@ def receive():
 
 def write():
     while True:
-        time.sleep(1)
         message = f'{nickname}: {input("")}'
         client.send(message.encode(FORMAT))
 

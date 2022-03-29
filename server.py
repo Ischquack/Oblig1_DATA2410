@@ -21,34 +21,38 @@ clients = []
 nicknames = []
 
 
-def broadcast(message):
+def broadcast(message, compare):
     for client in clients:
-        client.send(message.encode(FORMAT))
-
+        if client != compare:
+            time.sleep(1)
+            client.send(message.encode(FORMAT))
+        
 def sendSuggestion():
     action = random.choice(story.actions)
     actionMsg = "#ACTION" + action
-    broadcast(actionMsg)
+    broadcast(actionMsg, None)
     question = random.choice(story.suggestions).format(action)
     message = "#SUGGESTION{} \n".format(question)
-    broadcast(message)
+    broadcast(message, None)
 
 
 def handle(client):
     if len(clients) > 1:
-        time.sleep(1)
+        time.sleep(2)
         sendSuggestion()
     while True:
         try:
             message = client.recv(2048).decode(FORMAT)
             print(message)
-            broadcast(message)
+            broadcast(message, client)
         except:
             index = clients.index(client)
             clients.remove(client)
             client.close()
+            time.sleep(1)
+            print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
             nickname = nicknames[index]
-            broadcast(f'{nickname}: left the chat')
+            broadcast(f'{nickname}: left the chat', None)
             nicknames.remove(nickname)
             break
 
@@ -63,7 +67,7 @@ def receive():
         clients.append(client)
 
         print(f'Nickname of the client is {nickname} \n')
-        broadcast(f'{nickname} has entered the chat \n')
+        broadcast(f'{nickname} has entered the chat \n', None)
         client.send('Connected to the server'.encode(FORMAT))
 
         thread = threading.Thread(target=handle, args=(client,))
