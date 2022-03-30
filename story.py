@@ -12,4 +12,28 @@ actions[1] = "fish"
 actions[2] = "surf"
 actions[3] = "fight"
 actions[4] = "cry"
-actions[5] = "nosediv"
+actions[5] = "smash"
+
+chuck = ['1', '2', '3', '4']
+chuck[0] = "This is gonna be the summer of love because I'm gonna be {} \n"
+chuck[1] = "Great idea, let's go {} after dark \n"
+chuck[2] = "{} sounds like it could be fun if were drunk, how about we combine the two? \n"
+chuck[3] = "Never one to back down from a challenge, of course I'll go {} \n"
+
+huck = ['1', '2', '3', '4']
+huck[0] = "If Tuck joins, I'm in. God forbid it ends up being me and Chuck {} alone together again \n"
+huck[1] = "That sounds like a terrible idea, if I wanted to go {} I'd do it with Vanessa instead \n"
+huck[2] = "I'm gonna fuck Chuck's summer up, because he wants to go {} \n"
+huck[3] = "That's actually not a bad idea, I'd love to try {} \n" 
+
+duck = ['1', '2', '3', '4']
+duck[0] = "As the responsible one of the bunch here, I'll have to put my foot down and say no to {} \n"
+duck[1] = "I hate it when Huck fucks Chuck, but if Chuck tries {} I guess it can't be helped \n"
+duck[2] = "Never thought I'd agree to this again, but I'm weak, let's do it! \n"
+duck[3] = "I'd love to see Tuck {}, but I think I'll have to pass myself \n"
+
+tuck = ['1', '2', '3', '4']
+tuck[0] = "Chuck went too far this time, but I still love him \n"
+tuck[1] = "As you well know, I've wanted to try {} for a while now - count me in! \n"
+tuck[2] = "Let the record state loud and clear that I was never in favour of us going through with this \n"
+tuck[3] = "Don't be deceived by his looks, Duck is actually the champion of {} \n"

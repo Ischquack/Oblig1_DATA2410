@@ -13,9 +13,6 @@ ADDR = (SERVER, PORT)
 nickname = input('Choose a nickname: ')
 action = ""
 
-#if nickname in bot.bots:
-#    nickname.start()
-
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
@@ -40,6 +37,7 @@ def receive():
 
         except:
             print('An error occured')
+            client.shutdown()
             client.close()
             break
 

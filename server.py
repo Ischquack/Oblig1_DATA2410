@@ -4,7 +4,6 @@ import threading
 import story
 import time
 
-NULL = ""
 HEADER = 64
 PORT = 5050
 SERVER = 'localhost'
@@ -24,7 +23,7 @@ nicknames = []
 def broadcast(message, compare):
     for client in clients:
         if client != compare:
-            time.sleep(1)
+            #time.sleep(0.2)
             client.send(message.encode(FORMAT))
         
 def sendSuggestion():
@@ -37,19 +36,19 @@ def sendSuggestion():
 
 
 def handle(client):
-    if len(clients) > 1:
-        time.sleep(2)
+    if len(clients) > 0:
+        #time.sleep(1.1)
         sendSuggestion()
     while True:
         try:
             message = client.recv(2048).decode(FORMAT)
-            print(message)
             broadcast(message, client)
         except:
             index = clients.index(client)
             clients.remove(client)
+            #client.shutdown()
             client.close()
-            time.sleep(1)
+            #time.sleep(1)
             print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
             nickname = nicknames[index]
             broadcast(f'{nickname}: left the chat', None)
@@ -67,7 +66,7 @@ def receive():
         clients.append(client)
 
         print(f'Nickname of the client is {nickname} \n')
-        broadcast(f'{nickname} has entered the chat \n', None)
+        broadcast(f'{nickname} has entered the chat \n', client)
         client.send('Connected to the server'.encode(FORMAT))
 
         thread = threading.Thread(target=handle, args=(client,))

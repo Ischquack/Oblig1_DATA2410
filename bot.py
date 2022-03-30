@@ -1,5 +1,6 @@
+import random
 import time
-import client
+import story
 
 bots = ["Chuck", "Huck", "Duck", "Tuck"]
 
@@ -13,21 +14,22 @@ def selectBot(nick, message):
     elif nick == "Tuck":
         response = Tuck(message)
     else:
+        import client
         response = client.write()
     return response
 
 def Chuck(a, b = None):
     #time.sleep(1)
-    return "This is gonna be the summer of love because I'm gonna be {} \n".format(a + "ing")
+    return random.choice(story.chuck).format(a + "ing")
 
 def Huck(a, b = None):
     #time.sleep(2)
-    return "I'm gonna fuck Chuck's summer up, because he wants to {} \n".format(a)
+    return random.choice(story.huck).format(a + "ing")
 
 def Duck(a, b = None):
     #time.sleep(3)
-    return "I hate it when Huck fucks Chuck, but if Chuck tries to {} I guess it can't be helped \n".format(a)
+    return random.choice(story.duck).format(a + "ing")
 
 def Tuck(a, b = None):
     #time.sleep(4)
-    return "Chuck went too far this time, but I still love him \n"
+    return random.choice(story.tuck).format(a + "ing")
